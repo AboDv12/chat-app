@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body{
+        margin:0px;
+        display: grid;
+        align-items: center;
+        justify-content: center;
+        font-family: Arial;
+        background:#5890FF;
+      }
+      #login{
+        border:none;
+        border-radius :10px;
+        padding:50px;
+        background:white;
+      }
+      h1{
+        font-size:80px;
+        color:white;
+      }
+      h3{
+        font-size:50px;
+      }
+      input{
+        height:60px;
+        width:100%;
+        border:2px solid black;
+        border-radius: 10px;
+        font-size:40px;
+        font-weight: bold;
+      }
+      button{
+        width:100%;
+        height:70px;
+        font-size: 40px;
+        font-weight: bold;
+        color: white;
+        background: #1877F2;
+        border:none;
+        border-radius: 10px;
+        margin-top:30px;
+      }
+      a{
+        font-size:25px;
+        text-decoration: none;
+      }
+      #p{
+        margin-top:50px;
+      }
+    </style>
+  </head>
+  <body>
+    <center> <h1> Create Account</h1></center>
+    <div id='login'>
+     <h3>username</h3>
+      <input id='username'>
+      <h3>password</h3>
+      <input id='pass' type='password'>
+      <button id='create'>Create</button>
+      
+      <center><a href='/login'><p id='p'>have account? try to login</p></a></center>
+    </div>
+    <script src='socket.io/socket.io.js'></script>
+    <script>
+      const socket = io();
+      let clickNum = 0;
+      let src = '/account.html'
+      const username = document.querySelector('#username');
+      const pass = document.querySelector('#pass');
+      const create = document.querySelector('#create');
+      create.addEventListener("click",()=>{
+        password = pass.value;
+        user = username.value;
+        console.log(password)
+        clickNum++;
+        socket.emit('pass-check',password);
+        socket.emit('user-check',user);
+  
+      })
+     socket.on('account-done',()=>{
+       alert('done!');
+       window.location.href='/main'
+     })
+     
+     socket.on('err-user',()=>{
+       alert('يوجد هناك بالفعل شخص بهذا الاسم')
+     })
+    </script>
+  </body>
+</html>
